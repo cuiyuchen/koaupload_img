@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<script src='../js/jquery.js'></script>
+	<style>
+	*{
+		margin:0;
+		padding:0;
+	}
+	img{
+		width:200px;
+		height: 200px;
+		border:1px solid #ccc;
+		background: #f00;
+	}
+	</style>
+</head>
+<body>
+	
+	<!-- <form action="/cuizhenapi/setfile" method='post' enctype="multipart/form-data"> -->
+		<input type="file" name='myfile' onchange="showPreview(this)" id='myfile'>
+		<input type="text" name='username' id='username'>
+		<input type="password" name='pwd' id='password'>
+		<input type="submit" value="提交" id='submit'>
+	<!-- </form> -->
+	<img id="portrait" src="" style="display:block;" />
+
+</body>
+<script>
+		function showPreview(file){
+			console.info(file.files[0]);
+			var file = file.files[0];
+			if(window.FileReader) {
+	          var fr = new FileReader();
+	          console.log(fr);
+	          var portrait = document.getElementById('portrait');
+	          fr.onloadend = function(e) {
+	            portrait.src = e.target.result;
+	          };
+	          fr.readAsDataURL(file);
+	      }
+		}
+
+		submit.onclick=function(){
+			var formdata = new FormData();
+			formdata.append("age",12);
+			formdata.append("name",'cuizhen');
+			formdata.append("myfile",myfile.files[0]);
+			$.ajax({
+				type:'post',
+				url:'/cuizhenapi/setfile',
+				//contentType:'application/json',
+				processData : false, // 不处理发送的数据，因为data值是Formdata对象，不需要对数据做处理
+           		contentType : false, 
+				// data:JSON.stringify({
+				// 	name:'cuizhen',
+				// 	age:'12'
+				// }),
+				data:formdata,
+				success:function(res){
+					console.info(res)
+				},
+				error:function(){
+					console.info('网络繁忙，请稍后再试')
+				}
+			})
+
+		}
+			
+	</script>
+</html>
